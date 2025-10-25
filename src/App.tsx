@@ -272,7 +272,7 @@ export default function RomanArabicConverter() {
                   type="number"
                   value={arabicInput}
                   onChange={(e) => handleArabicChange(e.target.value)}
-                  placeholder="Ej: 2024"
+                  placeholder="Ej: 2025"
                   min="1"
                   max="3999"
                   className={`w-full px-4 py-3 rounded-lg border-2 transition-colors ${
@@ -328,7 +328,7 @@ export default function RomanArabicConverter() {
                   type="text"
                   value={romanInput}
                   onChange={(e) => handleRomanChange(e.target.value)}
-                  placeholder="Ej: MMXXIV"
+                  placeholder="Ej: MMXXV"
                   className={`w-full px-4 py-3 rounded-lg border-2 uppercase transition-colors ${
                     romanError
                       ? 'border-red-500'
@@ -495,7 +495,7 @@ export default function RomanArabicConverter() {
               <p className={`mt-2 text-sm ${
                 darkMode ? 'text-gray-400' : 'text-gray-600'
               }`}>
-                Solo se permiten estas restas: IV (4), IX (9), XL (40), XC (90), CD (400), CM (900)
+                💡 Solo se permiten estas restas: IV (4), IX (9), XL (40), XC (90), CD (400), CM (900)
               </p>
             </div>
 
@@ -504,7 +504,7 @@ export default function RomanArabicConverter() {
               <h4 className={`font-semibold mb-2 flex items-center ${
                 darkMode ? 'text-purple-400' : 'text-purple-600'
               }`}>
-                <span className="mr-2"></span>
+                <span className="mr-2">🔢</span>
                 3. Regla de Repetición
               </h4>
               <p className={`mb-2 ${
@@ -549,7 +549,7 @@ export default function RomanArabicConverter() {
               <p className={`mt-2 text-sm ${
                 darkMode ? 'text-gray-400' : 'text-gray-600'
               }`}>
-                V, L y D <strong>nunca</strong> se repiten (usa IV en lugar de IIII)
+                ⚠️ V, L y D <strong>nunca</strong> se repiten (usa IV en lugar de IIII)
               </p>
             </div>
 
@@ -635,6 +635,247 @@ export default function RomanArabicConverter() {
               <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
                 Los romanos no tenían un símbolo para el <strong>cero</strong>. El concepto del cero llegó mucho después a Europa desde el mundo árabe e indio. Por eso los números romanos comienzan desde el 1.
               </p>
+            </div>
+
+            {/* Lo que nunca te contaron */}
+            <div className={`p-6 rounded-lg border-2 ${
+              darkMode 
+                ? 'bg-gradient-to-br from-purple-900/50 to-pink-900/50 border-purple-500/50' 
+                : 'bg-gradient-to-br from-purple-50 to-pink-50 border-purple-400'
+            }`}>
+              <h4 className={`text-lg font-bold mb-3 flex items-center ${
+                darkMode ? 'text-purple-300' : 'text-purple-700'
+              }`}>
+                <span className="mr-2"></span>
+                Lo Que Nunca Te Contaron de Los Números Romanos
+              </h4>
+              
+              <p className={`mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                ¿Pensabas que 3,999 era el límite? ¡Los romanos tenían un truco secreto para números gigantes!
+              </p>
+
+              <div className={`p-4 rounded-lg mb-4 ${
+                darkMode ? 'bg-gray-800/50' : 'bg-white/80'
+              }`}>
+                <h5 className={`font-semibold mb-2 ${
+                  darkMode ? 'text-purple-400' : 'text-purple-600'
+                }`}>
+                  El Vinculum (Barra Superior)
+                </h5>
+                <p className={`mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  Una <strong>barra horizontal</strong> sobre un número romano <strong>multiplica su valor por 1,000</strong>.
+                </p>
+
+                <div className="space-y-3">
+                  <div className={`p-3 rounded ${
+                    darkMode ? 'bg-gray-700' : 'bg-purple-100'
+                  }`}>
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <span className={`text-2xl font-bold ${
+                        darkMode ? 'text-purple-400' : 'text-purple-600'
+                      }`} style={{textDecoration: 'overline'}}>
+                        V
+                      </span>
+                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                        = 5 × 1,000 =
+                      </span>
+                      <span className="font-bold text-lg">5,000</span>
+                      <span className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                        (cinco mil)
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={`p-3 rounded ${
+                    darkMode ? 'bg-gray-700' : 'bg-purple-100'
+                  }`}>
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <span className={`text-2xl font-bold ${
+                        darkMode ? 'text-purple-400' : 'text-purple-600'
+                      }`} style={{textDecoration: 'overline'}}>
+                        X
+                      </span>
+                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                        = 10 × 1,000 =
+                      </span>
+                      <span className="font-bold text-lg">10,000</span>
+                      <span className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                        (diez mil)
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={`p-3 rounded ${
+                    darkMode ? 'bg-gray-700' : 'bg-purple-100'
+                  }`}>
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <span className={`text-2xl font-bold ${
+                        darkMode ? 'text-purple-400' : 'text-purple-600'
+                      }`} style={{textDecoration: 'overline'}}>
+                        L
+                      </span>
+                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                        = 50 × 1,000 =
+                      </span>
+                      <span className="font-bold text-lg">50,000</span>
+                      <span className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                        (cincuenta mil)
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={`p-3 rounded ${
+                    darkMode ? 'bg-gray-700' : 'bg-purple-100'
+                  }`}>
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <span className={`text-2xl font-bold ${
+                        darkMode ? 'text-purple-400' : 'text-purple-600'
+                      }`} style={{textDecoration: 'overline'}}>
+                        C
+                      </span>
+                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                        = 100 × 1,000 =
+                      </span>
+                      <span className="font-bold text-lg">100,000</span>
+                      <span className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                        (cien mil)
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={`p-3 rounded ${
+                    darkMode ? 'bg-gray-700' : 'bg-purple-100'
+                  }`}>
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <span className={`text-2xl font-bold ${
+                        darkMode ? 'text-purple-400' : 'text-purple-600'
+                      }`} style={{textDecoration: 'overline'}}>
+                        M
+                      </span>
+                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                        = 1,000 × 1,000 =
+                      </span>
+                      <span className="font-bold text-lg">1,000,000</span>
+                      <span className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                        (un millón)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className={`p-4 rounded-lg ${
+                darkMode ? 'bg-gray-800/50' : 'bg-white/80'
+              }`}>
+                <h5 className={`font-semibold mb-2 ${
+                  darkMode ? 'text-pink-400' : 'text-pink-600'
+                }`}>
+                  Doble Barra
+                </h5>
+                <p className={`mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  ¿Quieres números aún más grandes? <strong>Cada barra adicional multiplica por 1,000</strong>.
+                </p>
+
+                <div className="space-y-2">
+                  <div className={`p-3 rounded ${
+                    darkMode ? 'bg-gray-700' : 'bg-pink-50'
+                  }`}>
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <div className="relative inline-block">
+                        <span className={`text-xl font-bold ${
+                          darkMode ? 'text-pink-400' : 'text-pink-600'
+                        }`} style={{textDecoration: 'overline', textDecorationStyle: 'double', textDecorationThickness: '2px'}}>
+                          V
+                        </span>
+                      </div>
+                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                        = 5 × 1,000 × 1,000 =
+                      </span>
+                      <span className="font-bold">5,000,000</span>
+                      <span className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                        (cinco millones)
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={`p-3 rounded ${
+                    darkMode ? 'bg-gray-700' : 'bg-pink-50'
+                  }`}>
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <div className="relative inline-block">
+                        <span className={`text-xl font-bold ${
+                          darkMode ? 'text-pink-400' : 'text-pink-600'
+                        }`} style={{textDecoration: 'overline', textDecorationStyle: 'double', textDecorationThickness: '2px'}}>
+                          X
+                        </span>
+                      </div>
+                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                        = 10 × 1,000 × 1,000 =
+                      </span>
+                      <span className="font-bold">10,000,000</span>
+                      <span className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                        (diez millones)
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={`p-3 rounded ${
+                    darkMode ? 'bg-gray-700' : 'bg-pink-50'
+                  }`}>
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <div className="relative inline-block">
+                        <span className={`text-xl font-bold ${
+                          darkMode ? 'text-pink-400' : 'text-pink-600'
+                        }`} style={{textDecoration: 'overline', textDecorationStyle: 'double', textDecorationThickness: '2px'}}>
+                          L
+                        </span>
+                      </div>
+                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                        = 50 × 1,000 × 1,000 =
+                      </span>
+                      <span className="font-bold">50,000,000</span>
+                      <span className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                        (cincuenta millones)
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={`p-3 rounded ${
+                    darkMode ? 'bg-gray-700' : 'bg-pink-50'
+                  }`}>
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <div className="relative inline-block">
+                        <span className={`text-xl font-bold ${
+                          darkMode ? 'text-pink-400' : 'text-pink-600'
+                        }`} style={{textDecoration: 'overline', textDecorationStyle: 'double', textDecorationThickness: '2px'}}>
+                          C
+                        </span>
+                      </div>
+                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                        = 100 × 1,000 × 1,000 =
+                      </span>
+                      <span className="font-bold">100,000,000</span>
+                      <span className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                        (cien millones)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <p className={`mt-3 text-sm ${
+                  darkMode ? 'text-gray-400' : 'text-gray-600'
+                }`}>
+                  <strong>Regla simple:</strong> 2 barras = multiplicar por 1,000,000. ¡Así los romanos llegaban a números astronómicos!
+                </p>
+              </div>
+
+              <div className={`mt-4 p-3 rounded-lg ${
+                darkMode ? 'bg-purple-900/30' : 'bg-purple-100'
+              }`}>
+                <p className={`text-sm ${darkMode ? 'text-purple-300' : 'text-purple-800'}`}>
+                  <strong>📝 Nota:</strong> Este conversor trabaja con el rango estándar (1-3,999), pero ahora ya conoces el secreto para números más grandes. Los romanos antiguos usaban el vinculum para transacciones comerciales y cálculos astronómicos.
+                </p>
+              </div>
             </div>
           </div>
         </div>

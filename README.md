@@ -1,73 +1,117 @@
-# React + TypeScript + Vite
+# 🏛️ Conversor Números Arábigos ↔ Romanos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web interactiva para convertir números entre el sistema arábigo y romano de forma bidireccional.
 
-Currently, two official plugins are available:
+**🚀 Demo en vivo:** https://conversornumerosromanos.netlify.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript) ![Tailwind](https://img.shields.io/badge/Tailwind-3-38B2AC?logo=tailwindcss)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Características
 
-## Expanding the ESLint configuration
+- 🔄 **Conversión bidireccional** - Arábigo ↔ Romano (rango 1-3999)
+- ⚡ **Conversión instantánea** - Resultados en tiempo real
+- ✅ **Validación inteligente** - Mensajes claros de error
+- 📚 **Historial** - Últimas 10 conversiones guardadas
+- 🌓 **Tema claro/oscuro** - Cambia según tu preferencia
+- 📱 **100% Responsive** - Funciona en móvil, tablet y desktop
+- 📖 **Guía educativa** - Aprende cómo funcionan los números romanos
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🚀 Instalación Local
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+```bash
+# Clonar el repositorio
+git clone https://github.com/TU_USUARIO/roman-arabic-converter.git
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Entrar al directorio
+cd roman-arabic-converter
+
+# Instalar dependencias
+npm install
+
+# Iniciar servidor de desarrollo
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Abre `http://localhost:5173` en tu navegador.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🛠️ Tecnologías
+
+- **React 18** - Framework UI
+- **TypeScript** - Tipado estático
+- **Vite** - Build tool ultrarrápido
+- **Tailwind CSS** - Estilos utility-first
+- **Lucide React** - Iconos modernos
+
+---
+
+## 📝 Uso
+
+### Arábigo → Romano
+1. Escribe un número entre 1 y 3999
+2. El resultado aparece automáticamente
+
+### Romano → Arábigo
+1. Escribe números romanos (ej: MMXXIV)
+2. Conversión instantánea
+
+### Historial
+- Click en cualquier conversión anterior para recargarla
+- Se guardan las últimas 10 conversiones
+
+---
+
+## 🎓 Reglas de Números Romanos
+
+| Símbolo | Valor |
+|---------|-------|
+| I | 1 |
+| V | 5 |
+| X | 10 |
+| L | 50 |
+| C | 100 |
+| D | 500 |
+| M | 1000 |
+
+**Reglas básicas:**
+1. **Suma**: Símbolos iguales o decrecientes se suman → `VI = 6`
+2. **Resta**: Símbolo menor antes de mayor se resta → `IV = 4`
+3. **Repetición**: I, X, C, M se repiten máximo 3 veces → `III = 3`
+
+**Ejemplos:**
+- `MCMXCIV` = 1994
+- `MMXXIV` = 2024
+- `CDXLIV` = 444
+
+---
+
+## 📂 Estructura del Proyecto
+
 ```
+roman-arabic-converter/
+├── src/
+│   ├── App.tsx              # Componente principal con lógica
+│   ├── main.tsx             # Punto de entrada React
+│   └── index.css            # Estilos Tailwind
+├── public/                  # Archivos estáticos
+├── index.html               # HTML base
+├── netlify.toml             # Config deploy Netlify
+├── tailwind.config.js       # Config Tailwind CSS
+├── vite.config.ts           # Config Vite
+└── package.json             # Dependencias
+```
+
+---
+
+## 👤 Autor
+
+**Fabricio Coledani**
+- Estudiante de la Universidad Provincial de Córdoba Sede Capilla del Monte
+- Proyecto Realizado en la Materia: Diseños y Arquitecturas de Despliegues I
+
+---

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Moon, Sun, History, ArrowRight, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Moon, Sun, History, ArrowRight } from 'lucide-react';
 
 // Utilidades de conversión
 const arabicToRoman = (num: number): string => {
@@ -272,7 +272,7 @@ export default function RomanArabicConverter() {
                   type="number"
                   value={arabicInput}
                   onChange={(e) => handleArabicChange(e.target.value)}
-                  placeholder="Ej: 2025"
+                  placeholder="Ej: 2024"
                   min="1"
                   max="3999"
                   className={`w-full px-4 py-3 rounded-lg border-2 transition-colors ${
@@ -328,7 +328,7 @@ export default function RomanArabicConverter() {
                   type="text"
                   value={romanInput}
                   onChange={(e) => handleRomanChange(e.target.value)}
-                  placeholder="Ej: MMXXV"
+                  placeholder="Ej: MMXXIV"
                   className={`w-full px-4 py-3 rounded-lg border-2 uppercase transition-colors ${
                     romanError
                       ? 'border-red-500'
@@ -504,7 +504,7 @@ export default function RomanArabicConverter() {
               <h4 className={`font-semibold mb-2 flex items-center ${
                 darkMode ? 'text-purple-400' : 'text-purple-600'
               }`}>
-                <span className="mr-2">🔢</span>
+                <span className="mr-2"></span>
                 3. Regla de Repetición
               </h4>
               <p className={`mb-2 ${
@@ -660,7 +660,7 @@ export default function RomanArabicConverter() {
                 <h5 className={`font-semibold mb-2 ${
                   darkMode ? 'text-purple-400' : 'text-purple-600'
                 }`}>
-                  El Vinculum (Barra Superior)
+                   El Vinculum (Barra Superior)
                 </h5>
                 <p className={`mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                   Una <strong>barra horizontal</strong> sobre un número romano <strong>multiplica su valor por 1,000</strong>.
@@ -770,7 +770,7 @@ export default function RomanArabicConverter() {
                 <h5 className={`font-semibold mb-2 ${
                   darkMode ? 'text-pink-400' : 'text-pink-600'
                 }`}>
-                  Doble Barra
+                   Doble Barra
                 </h5>
                 <p className={`mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                   ¿Quieres números aún más grandes? <strong>Cada barra adicional multiplica por 1,000</strong>.
@@ -865,7 +865,7 @@ export default function RomanArabicConverter() {
                 <p className={`mt-3 text-sm ${
                   darkMode ? 'text-gray-400' : 'text-gray-600'
                 }`}>
-                  <strong>Regla simple:</strong> 2 barras = multiplicar por 1,000,000. ¡Así los romanos llegaban a números astronómicos!
+                   <strong>Regla simple:</strong> 2 barras = multiplicar por 1,000,000. ¡Así los romanos llegaban a números astronómicos!
                 </p>
               </div>
 

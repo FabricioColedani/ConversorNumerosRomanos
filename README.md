@@ -2,7 +2,7 @@
 
 Aplicación web interactiva para convertir números entre el sistema arábigo y romano de forma bidireccional.
 
-**🚀 Demo en vivo:** https://conversornumerosromanos.netlify.app/
+**🚀 Sitio en Vivo:** https://conversornumerosromanos.netlify.app/
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript) ![Tailwind](https://img.shields.io/badge/Tailwind-3-38B2AC?logo=tailwindcss)
 
@@ -24,10 +24,10 @@ Aplicación web interactiva para convertir números entre el sistema arábigo y 
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/TU_USUARIO/roman-arabic-converter.git
+git clone https://github.com/TU_USUARIO/ConversorNumerosRomanos.git
 
 # Entrar al directorio
-cd roman-arabic-converter
+cd ConversorNumerosRomanos
 
 # Instalar dependencias
 npm install
@@ -93,9 +93,14 @@ Abre `http://localhost:5173` en tu navegador.
 ## 📂 Estructura del Proyecto
 
 ```
-roman-arabic-converter/
+ConversorNumerosRomanos/
+├── backend/       
+│   ├── server.js       # Logica del Conversor
+│   ├── package.json    # Dependencias Backend
+│   ├── test.js         # Pruebas de la logicas
+│   └── .gitignore 
 ├── src/
-│   ├── App.tsx              # Componente principal con lógica
+│   ├── App.tsx              # Frontend + API de la carpeta Backend (Desplegado en Render)
 │   ├── main.tsx             # Punto de entrada React
 │   └── index.css            # Estilos Tailwind
 ├── public/                  # Archivos estáticos

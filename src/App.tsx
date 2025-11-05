@@ -1,53 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Moon, Sun, History, ArrowRight } from 'lucide-react';
+const API_URL = 'https://roman-arabic-api.onrender.com/';
 
 // Utilidades de conversión
-const arabicToRoman = (num: number): string => {
-  if (num < 1 || num > 3999) return '';
-  
-  const values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
-  const symbols = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'];
-  
-  let result = '';
-  for (let i = 0; i < values.length; i++) {
-    while (num >= values[i]) {
-      result += symbols[i];
-      num -= values[i];
-    }
-  }
-  return result;
-};
-
-const romanToArabic = (roman: string): number => {
-  const romanMap: { [key: string]: number } = {
-    'I': 1, 'V': 5, 'X': 10, 'L': 50,
-    'C': 100, 'D': 500, 'M': 1000
-  };
-  
-  let result = 0;
-  const upper = roman.toUpperCase();
-  
-  for (let i = 0; i < upper.length; i++) {
-    const current = romanMap[upper[i]];
-    const next = romanMap[upper[i + 1]];
-    
-    if (!current) return -1;
-    
-    if (next && current < next) {
-      result -= current;
-    } else {
-      result += current;
-    }
-  }
-  
-  return result;
-};
-
-const validateRoman = (roman: string): boolean => {
-  if (!roman) return false;
-  const pattern = /^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/i;
-  return pattern.test(roman);
-};
 
 interface Conversion {
   id: string;
@@ -89,7 +44,7 @@ export default function RomanArabicConverter() {
     sessionStorage.setItem('conversionHistory', JSON.stringify(newHistory));
   };
 
-  const handleArabicChange = (value: string) => {
+  const handleArabicChange = async (value: string) => {
     setArabicInput(value);
     setArabicError('');
     
@@ -106,18 +61,24 @@ export default function RomanArabicConverter() {
       return;
     }
     
-    if (num < 1 || num > 3999) {
-      setArabicError('Número debe estar entre 1 y 3999');
+    try {
+      const response = await fetch(`${API_URL}/a2r?arabic=${num}`);
+      const data = await response.json();
+      
+      if (data.error) {
+        setArabicError(data.error);
+        setRomanInput('');
+      } else {
+        setRomanInput(data.roman);
+        addToHistory(num, data.roman);
+      }
+    } catch (error) {
+      setArabicError('Error conectando con el servidor');
       setRomanInput('');
-      return;
     }
-    
-    const roman = arabicToRoman(num);
-    setRomanInput(roman);
-    addToHistory(num, roman);
   };
 
-  const handleRomanChange = (value: string) => {
+  const handleRomanChange = async (value: string) => {
     setRomanInput(value);
     setRomanError('');
     
@@ -128,22 +89,21 @@ export default function RomanArabicConverter() {
     
     const upper = value.toUpperCase();
     
-    if (!validateRoman(upper)) {
-      setRomanError('Notación romana inválida');
+    try {
+      const response = await fetch(`${API_URL}/r2a?roman=${upper}`);
+      const data = await response.json();
+      
+      if (data.error) {
+        setRomanError(data.error);
+        setArabicInput('');
+      } else {
+        setArabicInput(data.arabic.toString());
+        addToHistory(data.arabic, upper);
+      }
+    } catch (error) {
+      setRomanError('Error conectando con el servidor');
       setArabicInput('');
-      return;
     }
-    
-    const arabic = romanToArabic(upper);
-    
-    if (arabic < 1 || arabic > 3999) {
-      setRomanError('Resultado fuera de rango (1-3999)');
-      setArabicInput('');
-      return;
-    }
-    
-    setArabicInput(arabic.toString());
-    addToHistory(arabic, upper);
   };
 
   const clearHistory = () => {

@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Moon, Sun, History, ArrowRight } from 'lucide-react';
-const API_URL = 'https://roman-arabic-api.onrender.com';
- //API Creada en la carpeta Raiz (Backend) usando RENDER.COM
 
-// Utilidades de conversión
+// ⚠️ CAMBIAR ESTA URL POR LA DE TU BACKEND EN RENDER
+const API_URL = 'http://localhost:3000'; // Cambia esto después del deploy
 
 interface Conversion {
   id: string;
@@ -20,6 +19,13 @@ export default function RomanArabicConverter() {
   const [showHistory, setShowHistory] = useState(false);
   const [arabicError, setArabicError] = useState('');
   const [romanError, setRomanError] = useState('');
+  // reemplazamos loading por dos flags para no deshabilitar el campo que estás editando
+  const [loadingArabic, setLoadingArabic] = useState(false);
+  const [loadingRoman, setLoadingRoman] = useState(false);
+
+  // refs para debounce
+  const arabicTimer = useRef<number | null>(null);
+  const romanTimer = useRef<number | null>(null);
 
   useEffect(() => {
     const stored = sessionStorage.getItem('conversionHistory');
@@ -45,66 +51,94 @@ export default function RomanArabicConverter() {
     sessionStorage.setItem('conversionHistory', JSON.stringify(newHistory));
   };
 
-  const handleArabicChange = async (value: string) => {
+  // 🌐 Debounced Arábigo -> Romano
+  const handleArabicChange = (value: string) => {
     setArabicInput(value);
     setArabicError('');
-    
+    // limpia timer anterior
+    if (arabicTimer.current) {
+      clearTimeout(arabicTimer.current);
+      arabicTimer.current = null;
+    }
+
     if (!value) {
       setRomanInput('');
       return;
     }
-    
+
     const num = parseInt(value);
-    
     if (isNaN(num)) {
       setArabicError('Ingresa un número válido');
       setRomanInput('');
       return;
     }
-    
-    try {
-      const response = await fetch(`${API_URL}/a2r?arabic=${num}`);
-      const data = await response.json();
-      
-      if (data.error) {
-        setArabicError(data.error);
-        setRomanInput('');
-      } else {
-        setRomanInput(data.roman);
-        addToHistory(num, data.roman);
-      }
-    } catch (error) {
-      setArabicError('Error conectando con el servidor');
+    if (num < 1 || num > 3999) {
+      setArabicError('Número debe estar entre 1 y 3999');
       setRomanInput('');
+      return;
     }
+
+    // debounce: espera 400ms después de la última tecla
+    arabicTimer.current = window.setTimeout(async () => {
+      setLoadingArabic(true);
+      try {
+        const response = await fetch(`${API_URL}/a2r?arabic=${num}`);
+        const data = await response.json();
+        if (data.error) {
+          setArabicError(data.error);
+          setRomanInput('');
+        } else {
+          setRomanInput(data.roman);
+          addToHistory(num, data.roman);
+        }
+      } catch (error) {
+        console.error('Error al conectar con la API:', error);
+        setArabicError('Error al conectar con el servidor. ¿Está el backend corriendo?');
+        setRomanInput('');
+      } finally {
+        setLoadingArabic(false);
+      }
+    }, 400);
   };
 
-  const handleRomanChange = async (value: string) => {
+  // 🌐 Debounced Romano -> Arábigo
+  const handleRomanChange = (value: string) => {
     setRomanInput(value);
     setRomanError('');
-    
+
+    // limpia timer anterior
+    if (romanTimer.current) {
+      clearTimeout(romanTimer.current);
+      romanTimer.current = null;
+    }
+
     if (!value) {
       setArabicInput('');
       return;
     }
-    
+
     const upper = value.toUpperCase();
-    
-    try {
-      const response = await fetch(`${API_URL}/r2a?roman=${upper}`);
-      const data = await response.json();
-      
-      if (data.error) {
-        setRomanError(data.error);
+    // debounce: espera 400ms después de la última tecla
+    romanTimer.current = window.setTimeout(async () => {
+      setLoadingRoman(true);
+      try {
+        const response = await fetch(`${API_URL}/r2a?roman=${encodeURIComponent(upper)}`);
+        const data = await response.json();
+        if (data.error) {
+          setRomanError(data.error);
+          setArabicInput('');
+        } else {
+          setArabicInput(data.arabic.toString());
+          addToHistory(data.arabic, upper);
+        }
+      } catch (error) {
+        console.error('Error al conectar con la API:', error);
+        setRomanError('Error al conectar con el servidor. ¿Está el backend corriendo?');
         setArabicInput('');
-      } else {
-        setArabicInput(data.arabic.toString());
-        addToHistory(data.arabic, upper);
+      } finally {
+        setLoadingRoman(false);
       }
-    } catch (error) {
-      setRomanError('Error conectando con el servidor');
-      setArabicInput('');
-    }
+    }, 400);
   };
 
   const clearHistory = () => {
@@ -134,7 +168,7 @@ export default function RomanArabicConverter() {
             <p className={`text-sm md:text-base mt-1 ${
               darkMode ? 'text-gray-400' : 'text-gray-600'
             }`}>
-              Arábigos ↔ Romanos
+              Arábigos ↔ Romanos 
             </p>
           </div>
           
@@ -165,6 +199,7 @@ export default function RomanArabicConverter() {
           </div>
         </div>
 
+        
         {/* Historial */}
         {showHistory && history.length > 0 && (
           <div className={`mb-6 p-4 rounded-lg shadow-lg ${
@@ -236,13 +271,14 @@ export default function RomanArabicConverter() {
                   placeholder="Ej: 2024"
                   min="1"
                   max="3999"
+                  disabled={loadingRoman}
                   className={`w-full px-4 py-3 rounded-lg border-2 transition-colors ${
                     arabicError
                       ? 'border-red-500'
                       : darkMode
                       ? 'border-gray-600 bg-gray-700 text-white'
                       : 'border-gray-300 bg-white'
-                  } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  } focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50`}
                 />
                 {arabicError && (
                   <p className="text-red-500 text-sm mt-1">{arabicError}</p>
@@ -261,7 +297,7 @@ export default function RomanArabicConverter() {
                   <p className={`text-3xl font-bold ${
                     darkMode ? 'text-blue-400' : 'text-blue-600'
                   }`}>
-                    {romanInput}
+                    {romanInput || '...'}
                   </p>
                 </div>
               )}
@@ -290,13 +326,14 @@ export default function RomanArabicConverter() {
                   value={romanInput}
                   onChange={(e) => handleRomanChange(e.target.value)}
                   placeholder="Ej: MMXXIV"
+                  disabled={loadingArabic}
                   className={`w-full px-4 py-3 rounded-lg border-2 uppercase transition-colors ${
                     romanError
                       ? 'border-red-500'
                       : darkMode
                       ? 'border-gray-600 bg-gray-700 text-white'
                       : 'border-gray-300 bg-white'
-                  } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  } focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50`}
                 />
                 {romanError && (
                   <p className="text-red-500 text-sm mt-1">{romanError}</p>
@@ -315,7 +352,7 @@ export default function RomanArabicConverter() {
                   <p className={`text-3xl font-bold ${
                     darkMode ? 'text-indigo-400' : 'text-indigo-600'
                   }`}>
-                    {arabicInput}
+                    {arabicInput || '...'}
                   </p>
                 </div>
               )}

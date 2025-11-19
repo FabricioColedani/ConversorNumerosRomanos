@@ -328,7 +328,10 @@ export default function RomanArabicConverter() {
                 <input
                   type="text"
                   value={romanInput}
-                  onChange={(e) => handleRomanChange(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value.toUpperCase().replace(/[^IVXLCDM]/g, '');
+                    handleRomanChange(value);
+                  }}
                   placeholder="Ej: MMXXV"
                   disabled={loadingArabic}
                   className={`w-full px-4 py-3 rounded-lg border-2 uppercase transition-colors ${

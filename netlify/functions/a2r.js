@@ -1,38 +1,40 @@
-exports.handler = async (event) => {
+export const handler = async (event) => {
+  const arabic = event.queryStringParameters?.arabic;
+
   const headers = {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*"
+    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "application/json"
   };
 
-  const arabic = parseInt(event.queryStringParameters.arabic);
+  if (!arabic || isNaN(arabic)) {
+    return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid or missing arabic parameter" }) };
+  }
 
-  if (!arabic || arabic <= 0) {
-    return {
-      statusCode: 400,
-      headers,
-      body: JSON.stringify({ error: "Parámetro 'arabic' inválido." })
-    };
+  const num = Number(arabic);
+
+  if (num < 1 || num > 3999) {
+    return { statusCode: 400, headers, body: JSON.stringify({ error: "Number out of range (1-3999)" }) };
   }
 
   const map = [
-    [1000, "M"], [900, "CM"], [500, "D"], [400, "CD"],
-    [100, "C"], [90, "XC"], [50, "L"], [40, "XL"],
-    [10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]
+    ["M", 1000], ["CM", 900], ["D", 500], ["CD", 400],
+    ["C", 100], ["XC", 90], ["L", 50], ["XL", 40],
+    ["X", 10], ["IX", 9], ["V", 5], ["IV", 4], ["I", 1]
   ];
 
-  let roman = "";
-  let value = arabic;
+  let result = "";
+  let n = num;
 
-  for (const [num, rom] of map) {
-    while (value >= num) {
-      roman += rom;
-      value -= num;
+  for (const [roman, value] of map) {
+    while (n >= value) {
+      result += roman;
+      n -= value;
     }
   }
 
   return {
     statusCode: 200,
     headers,
-    body: JSON.stringify({ roman })
+    body: JSON.stringify({ roman: result })
   };
 };

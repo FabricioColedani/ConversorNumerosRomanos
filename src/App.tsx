@@ -265,12 +265,16 @@ export default function RomanArabicConverter() {
                   Número (1-3999)
                 </label>
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   value={arabicInput}
-                  onChange={(e) => handleArabicChange(e.target.value)}
-                  placeholder="Ej: 2024"
-                  min="1"
-                  max="3999"
+                  onChange={(e) => {
+                    // Solo permite números
+                    const value = e.target.value.replace(/[^0-9]/g, '');
+                    handleArabicChange(value);
+                  }}
+                  placeholder="Ej: 2025"
                   disabled={loadingRoman}
                   className={`w-full px-4 py-3 rounded-lg border-2 transition-colors ${
                     arabicError
@@ -325,7 +329,7 @@ export default function RomanArabicConverter() {
                   type="text"
                   value={romanInput}
                   onChange={(e) => handleRomanChange(e.target.value)}
-                  placeholder="Ej: MMXXIV"
+                  placeholder="Ej: MMXXV"
                   disabled={loadingArabic}
                   className={`w-full px-4 py-3 rounded-lg border-2 uppercase transition-colors ${
                     romanError

@@ -3,6 +3,11 @@
   publish = "dist"
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/a2r"
+  to = "/.netlify/functions/a2r"
+  status = 200
+
+[[redirects]]
+  from = "/r2a"
+  to = "/.netlify/functions/r2a"
   status = 200

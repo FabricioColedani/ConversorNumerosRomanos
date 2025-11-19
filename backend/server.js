@@ -4,7 +4,16 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors()); // Permitir peticiones desde Netlify
+app.use(cors({
+  origin: [
+    "https://conversornumerosromanos.netlify.app",
+    "http://localhost:5173",
+    "http://localhost:3000"
+  ],
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
+}));
+
 app.use(express.json());
 
 // Ruta de bienvenida

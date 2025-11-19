@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Moon, Sun, History, ArrowRight } from 'lucide-react';
 
-// ⚠️ CAMBIAR ESTA URL POR LA DE TU BACKEND EN RENDER
-const API_URL = 'https://roman-arabic-api.onrender.com'; // Cambia esto después del deploy
+// ✅ Usar rutas relativas - Netlify redirige automáticamente a las funciones
+const API_URL = ''; // Vacío porque las funciones están en el mismo dominio
 
 interface Conversion {
   id: string;
@@ -19,7 +19,6 @@ export default function RomanArabicConverter() {
   const [showHistory, setShowHistory] = useState(false);
   const [arabicError, setArabicError] = useState('');
   const [romanError, setRomanError] = useState('');
-  // reemplazamos loading por dos flags para no deshabilitar el campo que estás editando
   const [loadingArabic, setLoadingArabic] = useState(false);
   const [loadingRoman, setLoadingRoman] = useState(false);
 
@@ -55,7 +54,7 @@ export default function RomanArabicConverter() {
   const handleArabicChange = (value: string) => {
     setArabicInput(value);
     setArabicError('');
-    // limpia timer anterior
+    
     if (arabicTimer.current) {
       clearTimeout(arabicTimer.current);
       arabicTimer.current = null;
@@ -78,14 +77,15 @@ export default function RomanArabicConverter() {
       return;
     }
 
-    // debounce: espera 400ms después de la última tecla
     arabicTimer.current = window.setTimeout(async () => {
       setLoadingArabic(true);
       try {
+        // ✅ Usar ruta relativa a la función de Netlify
         const response = await fetch(`${API_URL}/a2r?arabic=${num}`);
         const data = await response.json();
-        if (data.error) {
-          setArabicError(data.error);
+        
+        if (!response.ok || data.error) {
+          setArabicError(data.error || 'Error en la conversión');
           setRomanInput('');
         } else {
           setRomanInput(data.roman);
@@ -93,7 +93,7 @@ export default function RomanArabicConverter() {
         }
       } catch (error) {
         console.error('Error al conectar con la API:', error);
-        setArabicError('Error al conectar con el servidor. ¿Está el backend corriendo?');
+        setArabicError('Error de conexión. Intenta nuevamente.');
         setRomanInput('');
       } finally {
         setLoadingArabic(false);
@@ -106,7 +106,6 @@ export default function RomanArabicConverter() {
     setRomanInput(value);
     setRomanError('');
 
-    // limpia timer anterior
     if (romanTimer.current) {
       clearTimeout(romanTimer.current);
       romanTimer.current = null;
@@ -118,14 +117,15 @@ export default function RomanArabicConverter() {
     }
 
     const upper = value.toUpperCase();
-    // debounce: espera 400ms después de la última tecla
     romanTimer.current = window.setTimeout(async () => {
       setLoadingRoman(true);
       try {
+        // ✅ Usar ruta relativa a la función de Netlify
         const response = await fetch(`${API_URL}/r2a?roman=${encodeURIComponent(upper)}`);
         const data = await response.json();
-        if (data.error) {
-          setRomanError(data.error);
+        
+        if (!response.ok || data.error) {
+          setRomanError(data.error || 'Número romano inválido');
           setArabicInput('');
         } else {
           setArabicInput(data.arabic.toString());
@@ -133,7 +133,7 @@ export default function RomanArabicConverter() {
         }
       } catch (error) {
         console.error('Error al conectar con la API:', error);
-        setRomanError('Error al conectar con el servidor. ¿Está el backend corriendo?');
+        setRomanError('Error de conexión. Intenta nuevamente.');
         setArabicInput('');
       } finally {
         setLoadingRoman(false);
@@ -297,7 +297,7 @@ export default function RomanArabicConverter() {
                   <p className={`text-3xl font-bold ${
                     darkMode ? 'text-blue-400' : 'text-blue-600'
                   }`}>
-                    {romanInput || '...'}
+                    {loadingArabic ? '...' : romanInput || '...'}
                   </p>
                 </div>
               )}
@@ -352,7 +352,7 @@ export default function RomanArabicConverter() {
                   <p className={`text-3xl font-bold ${
                     darkMode ? 'text-indigo-400' : 'text-indigo-600'
                   }`}>
-                    {arabicInput || '...'}
+                    {loadingRoman ? '...' : arabicInput || '...'}
                   </p>
                 </div>
               )}
